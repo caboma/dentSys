@@ -1,7 +1,9 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
 const pool = require("./data/db");
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,6 +15,8 @@ app.use(express.json());
 
 //API Routes
 
+//Routes for Clients
+//Route to get a list of all clients
 app.get("/clients", async (req, res) => {
   try {
     const all_clients = await pool.query("SELECT * FROM clients");
@@ -22,6 +26,7 @@ app.get("/clients", async (req, res) => {
   }
 });
 
+//Route to get a specific client
 app.get("/clients/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -32,10 +37,33 @@ app.get("/clients/:id", async (req, res) => {
   }
 });
 
+//Route to add new client information
+app.post("/clients", async (req, res) => {
+  try {
+    const {
+      last_name,
+      first_name,
+      gender,
+      dob,
+      address,
+      telephone,
+      email,
+      emergencyname,
+      emergencytelephone } = req.body;
 
+    const new_client = await pool.query("INSERT INTO clients (last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)", [last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone]);
 
+    res.json(new_client.rows[0])
 
+  } catch (err) {
+    console.error(err);
+  }
+})
+//End of Clients routes
 
+//Routes for Appointments
+
+//End of Appointments routes
 
 
 app.listen(port, () => {
