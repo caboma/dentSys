@@ -51,9 +51,9 @@ app.post("/clients", async (req, res) => {
       emergencyname,
       emergencytelephone } = req.body;
 
-    const new_client = await pool.query("INSERT INTO clients (last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)", [last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone]);
+    const newClient = await pool.query("INSERT INTO clients (last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)", [last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone]);
 
-    res.json(new_client.rows[0])
+    res.json(newClient.rows[0])
 
   } catch (err) {
     console.error(err);
@@ -75,9 +75,23 @@ app.put("/clients/:id", async (req, res) => {
       emergencyname,
       emergencytelephone } = req.body;
 
-    const update_client = await pool.query("UPDATE clients SET last_name = $1, first_name= $2, gender = $3, dob = $4, address = $5, telephone = $6, email = $7, emergencyname = $8, emergencytelephone = $9 WHERE id = $10", [last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone, id]);
+    const updateClient = await pool.query("UPDATE clients SET last_name = $1, first_name= $2, gender = $3, dob = $4, address = $5, telephone = $6, email = $7, emergencyname = $8, emergencytelephone = $9 WHERE id = $10", [last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone, id]);
 
     res.json("Client information was successfully updated");
+  } catch (err) {
+    console.error(err);
+  }
+})
+
+//Route to DELETE an existing client record
+
+app.delete("/clients/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleteClient = await pool.query("DELETE FROM clients WHERE id = $1", [id])
+
+    res.json("Client was successfully deleted!");
   } catch (err) {
     console.error(err);
   }
