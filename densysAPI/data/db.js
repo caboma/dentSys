@@ -1,15 +1,3 @@
-// const Pool = require("pg").Pool;
-
-// const pool = new Pool({
-//   user: "omarcabatbat",
-//   host: "localhost",
-//   database: "dentsys",
-//   password: "postgres",
-//   port: "5432",
-// })
-
-// module.exports = pool;
-
 const pg = require("pg");
 const Client = pg.Client;
 

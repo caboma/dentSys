@@ -59,6 +59,30 @@ app.post("/clients", async (req, res) => {
     console.error(err);
   }
 })
+//Route to UPDATE an existing client information
+
+app.put("/clients/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      last_name,
+      first_name,
+      gender,
+      dob,
+      address,
+      telephone,
+      email,
+      emergencyname,
+      emergencytelephone } = req.body;
+
+    const update_client = await pool.query("UPDATE clients SET last_name = $1, first_name= $2, gender = $3, dob = $4, address = $5, telephone = $6, email = $7, emergencyname = $8, emergencytelephone = $9 WHERE id = $10", [last_name, first_name, gender, dob, address, telephone, email, emergencyname, emergencytelephone, id]);
+
+    res.json("Client information was successfully updated");
+  } catch (err) {
+    console.error(err);
+  }
+})
+
 //End of Clients routes
 
 //Routes for Appointments
